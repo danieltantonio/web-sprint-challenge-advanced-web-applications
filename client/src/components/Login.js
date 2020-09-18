@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const initLogin = {
-  username: '',
-  password: ''
+  username: 'Lambda School',
+  password: 'i<3Lambd4'
 }
 
 const Login = () => {
@@ -16,12 +17,23 @@ const Login = () => {
     });
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axiosWithAuth()
+    .post('/api/login', login)
+    .then(res => {
+      localStorage.setItem('token', res.data.payload);
+    })
+    .catch(err => console.log(err))
+  }
+
   return (
     <>
       <h1>Welcome to the Bubble App!</h1>
-      <form>
-        <input type='text' value={login.username} onChange={handleChange}/>
-        <input type='password' value={login.password} onChange={handleChange}/>
+      <form onSubmit={handleSubmit}>
+        <input name='username' type='text' value={login.username} onChange={handleChange}/>
+        <input name='password' type='password' value={login.password} onChange={handleChange}/>
+        <button>Submit</button>
       </form>
     </>
   );
