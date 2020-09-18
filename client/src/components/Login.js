@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from 'react-router-dom'
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const initLogin = {
@@ -8,6 +9,7 @@ const initLogin = {
 
 const Login = () => {
   const [login, setLogin] = useState(initLogin);
+  const history = useHistory();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,7 +17,7 @@ const Login = () => {
       ...login,
       [name]: value
     });
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,9 +25,10 @@ const Login = () => {
     .post('/api/login', login)
     .then(res => {
       localStorage.setItem('token', res.data.payload);
+      history.push('/bubblepage');
     })
-    .catch(err => console.log(err))
-  }
+    .catch(err => console.log(err));
+  };
 
   return (
     <>
